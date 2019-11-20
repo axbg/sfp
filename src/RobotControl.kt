@@ -4,10 +4,16 @@ import java.awt.event.KeyEvent
 class RobotControl {
     companion object {
         private val robot = Robot()
-        fun keepActive(repeatDelay: Long) {
-            robot.keyPress(KeyEvent.VK_ALT)
-            robot.keyRelease(KeyEvent.VK_ALT)
-            Thread.sleep(repeatDelay)
+        fun keepActive() {
+            while (true) {
+                if (!UIControl.isPaused) {
+                    robot.keyPress(KeyEvent.VK_F13)
+                    robot.keyRelease(KeyEvent.VK_F13)
+                    Thread.sleep(UIControl.repeatDelay)
+                } else {
+                    break
+                }
+            }
         }
     }
 }

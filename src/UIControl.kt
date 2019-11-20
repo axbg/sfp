@@ -1,11 +1,14 @@
 import RefreshRateEnum.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.awt.Menu
 import java.awt.MenuItem
 import kotlin.system.exitProcess
 
 class UIControl {
     companion object {
-        var repeatDelay: Long = 50000
+        var repeatDelay: Long = 1000
+        var isPaused: Boolean = false
 
         internal fun bindCloseAction(): MenuItem {
             val closeAction = MenuItem("Close")
@@ -36,6 +39,22 @@ class UIControl {
             refreshRateAction.add(bindDelayControl(thirtyMinutes, THIRTY_MINUTES))
 
             return refreshRateAction
+        }
+
+        internal fun bindPauseAction(): MenuItem {
+            val pauseAction = MenuItem("Pause")
+            pauseAction.addActionListener {
+                isPaused = !isPaused
+                if (!isPaused) {
+                    pauseAction.label = "Pause"
+                    GlobalScope.launch {
+                        RobotControl.keepActive()
+                    }
+                } else {
+                    pauseAction.label = "Resume"
+                }
+            }
+            return pauseAction
         }
 
         private fun bindDelayControl(menuItem: MenuItem, delay: RefreshRateEnum): MenuItem {

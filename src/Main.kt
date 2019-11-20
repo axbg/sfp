@@ -1,14 +1,16 @@
 import com.sun.tools.javac.Main
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.awt.*
 import kotlin.system.exitProcess
 
 fun main() {
     if (SystemTray.isSupported()) {
         val systemTray: SystemTray = SystemTray.getSystemTray()
-//        val image: Image = Toolkit.getDefaultToolkit().getImage(Main::javaClass.javaClass.classLoader.getResource("icons/sfp.png"))
-        val image: Image = Toolkit.getDefaultToolkit().getImage("")
         val popupMenu = PopupMenu()
+        val image: Image = Toolkit.getDefaultToolkit().getImage(Main::javaClass.javaClass.classLoader.getResource("sfp.png"))
 
+        popupMenu.add(UIControl.bindPauseAction())
         popupMenu.add(UIControl.bindRefreshRateAction())
         popupMenu.add(UIControl.bindCloseAction())
 
@@ -16,8 +18,8 @@ fun main() {
         trayIcon.isImageAutoSize = true
         systemTray.add(trayIcon)
 
-        while (true) {
-            RobotControl.keepActive(UIControl.repeatDelay)
+        GlobalScope.launch {
+            RobotControl.keepActive()
         }
     } else {
         exitProcess(1)
