@@ -8,7 +8,7 @@ fun main() {
     if (SystemTray.isSupported()) {
         val systemTray: SystemTray = SystemTray.getSystemTray()
         val popupMenu = PopupMenu()
-        val image: Image = Toolkit.getDefaultToolkit().getImage(Main::javaClass.javaClass.classLoader.getResource("sfp.png"))
+        val image: Image = Toolkit.getDefaultToolkit().getImage(Main::javaClass.javaClass.classLoader.getResource("icon.png"))
 
         popupMenu.add(UIControl.bindPauseAction())
         popupMenu.add(UIControl.bindRefreshRateAction())
