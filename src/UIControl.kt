@@ -1,13 +1,17 @@
 import RefreshRateEnum.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.awt.Font
 import java.awt.Menu
 import java.awt.MenuItem
 import kotlin.system.exitProcess
 
 class UIControl {
     companion object {
-        var repeatDelay: Long = 1000
+        private val normalFont = Font("sans-serif", Font.PLAIN, 12)
+        private val selectedFont = Font("sans-serif", Font.BOLD, 12)
+
+        var repeatDelay: Long = 5000
         var isPaused: Boolean = false
 
         internal fun bindCloseAction(): MenuItem {
@@ -30,7 +34,7 @@ class UIControl {
 
             val refreshRateAction = Menu("Refresh rate")
             refreshRateAction.add(bindDelayControl(oneSecond, ONE_SECOND))
-            refreshRateAction.add(bindDelayControl(fiveSeconds, FIVE_SECONDS))
+            refreshRateAction.add(bindDelayControl(fiveSeconds, FIVE_SECONDS, selectedFont))
             refreshRateAction.add(bindDelayControl(tenSeconds, TEN_SECONDS))
             refreshRateAction.add(bindDelayControl(thirtySeconds, THIRTY_SECONDS))
             refreshRateAction.add(bindDelayControl(oneMinute, ONE_MINUTE))
@@ -57,11 +61,20 @@ class UIControl {
             return pauseAction
         }
 
-        private fun bindDelayControl(menuItem: MenuItem, delay: RefreshRateEnum): MenuItem {
+        private fun bindDelayControl(menuItem: MenuItem, delay: RefreshRateEnum, font: Font = normalFont): MenuItem {
+            menuItem.font = font
             menuItem.addActionListener {
                 repeatDelay = delay.refreshRate
+                unselectAll(menuItem.parent as Menu)
+                menuItem.font = selectedFont
             }
             return menuItem
+        }
+
+        private fun unselectAll(menu: Menu) {
+            for (i in 0 until menu.itemCount) {
+                menu.getItem(i).font = normalFont
+            }
         }
     }
 }
