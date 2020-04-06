@@ -8,8 +8,8 @@ import kotlin.system.exitProcess
 
 class UIControl {
     companion object {
-        private val normalFont = Font("sans-serif", Font.PLAIN, 12)
-        private val selectedFont = Font("sans-serif", Font.BOLD, 12)
+        private val normalFont = Font(Font.SANS_SERIF, Font.PLAIN, 12)
+        private val selectedFont = Font(Font.SERIF, Font.BOLD, 13)
 
         var repeatDelay: Long = 5000
         var isPaused: Boolean = false
