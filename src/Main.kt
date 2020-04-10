@@ -12,6 +12,7 @@ fun main() {
 
         popupMenu.add(UIControl.bindPauseAction())
         popupMenu.add(UIControl.bindRefreshRateAction())
+        popupMenu.add(UIControl.bindLockScreen())
         popupMenu.add(UIControl.bindCloseAction())
 
         val trayIcon = TrayIcon(image, "SFP", popupMenu)

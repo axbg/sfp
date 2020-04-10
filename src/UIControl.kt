@@ -11,7 +11,7 @@ class UIControl {
         private val normalFont = Font(Font.SANS_SERIF, Font.PLAIN, 12)
         private val selectedFont = Font(Font.SERIF, Font.BOLD, 13)
 
-        var repeatDelay: Long = 5000
+        var repeatDelay: Long = THIRTY_SECONDS.refreshRate
         var isPaused: Boolean = false
 
         internal fun bindCloseAction(): MenuItem {
@@ -34,9 +34,9 @@ class UIControl {
 
             val refreshRateAction = Menu("Refresh rate")
             refreshRateAction.add(bindDelayControl(oneSecond, ONE_SECOND))
-            refreshRateAction.add(bindDelayControl(fiveSeconds, FIVE_SECONDS, selectedFont))
+            refreshRateAction.add(bindDelayControl(fiveSeconds, FIVE_SECONDS))
             refreshRateAction.add(bindDelayControl(tenSeconds, TEN_SECONDS))
-            refreshRateAction.add(bindDelayControl(thirtySeconds, THIRTY_SECONDS))
+            refreshRateAction.add(bindDelayControl(thirtySeconds, THIRTY_SECONDS, selectedFont))
             refreshRateAction.add(bindDelayControl(oneMinute, ONE_MINUTE))
             refreshRateAction.add(bindDelayControl(fiveMinutes, FIVE_MINUTES))
             refreshRateAction.add(bindDelayControl(tenMinutes, TEN_MINUTES))
@@ -59,6 +59,17 @@ class UIControl {
                 }
             }
             return pauseAction
+        }
+
+        internal fun bindLockScreen(): MenuItem {
+            val lockScreenAction = MenuItem("Lock screen")
+
+            lockScreenAction.addActionListener {
+                val screenLock = ScreenLock("SFP Screen Lock")
+                screenLock.isVisible = true
+            }
+
+            return lockScreenAction
         }
 
         private fun bindDelayControl(menuItem: MenuItem, delay: RefreshRateEnum, font: Font = normalFont): MenuItem {
