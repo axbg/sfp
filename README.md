@@ -4,7 +4,7 @@
 ##### SFP also provides a pseudo screen locker to block your pet from sending random messages to your boss (been there)
 #
 ###### You can clone the repo and build the app or directly run the *sfp.jar* provided
-###### sfp.jar SHA-256 checksum: *2af042e73d3e27de479f5d6b31503debff0351c2ebdab882baa8ed0fe1a91f59*
+###### sfp.jar SHA-256 checksum: *1d57a9dd95b3ff9d0b43ed647873d53da75d4b3829219e189a4b20c4eb3a2850*
 #
 ![SFP Running](https://i.ibb.co/qpT4xvM/skypf.png "SFP running")
 
