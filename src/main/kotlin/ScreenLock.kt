@@ -3,10 +3,7 @@ import java.awt.*
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.image.BufferedImage
-import javax.swing.JFrame
-import javax.swing.JLabel
-import javax.swing.SwingConstants
-import javax.swing.WindowConstants
+import javax.swing.*
 
 class ScreenLock(title: String) : JFrame(), KeyListener {
     init {
@@ -25,15 +22,27 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
 
     private fun drawElements(frameTitle: String) {
         val frameIconImage = Toolkit.getDefaultToolkit().getImage(Main::javaClass.javaClass.classLoader.getResource("icon.png"))
-        val infoLabel = JLabel("press ctrl + alt + shift + del to unlock the screen", SwingConstants.CENTER)
-        val hiddenCursor = Toolkit.getDefaultToolkit().createCustomCursor(BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB),
-                Point(), null)
+
+        val iconLabel = JLabel(ImageIcon(frameIconImage))
+        iconLabel.alignmentX = JLabel.CENTER_ALIGNMENT
+
+        val infoLabel = JLabel("press ctrl + alt + shift + del to unlock the screen")
+        infoLabel.alignmentX = JLabel.CENTER_ALIGNMENT
+
+        val hiddenCursor = Toolkit.getDefaultToolkit().createCustomCursor(BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), Point(), null)
+
+        val vBox = Box.createVerticalBox()
+        vBox.add(Box.createVerticalGlue())
+        vBox.add(iconLabel)
+        vBox.add(infoLabel)
+        vBox.add(Box.createVerticalGlue())
 
         title = frameTitle
         contentPane.background = Color.WHITE
         contentPane.cursor = hiddenCursor
         iconImage = frameIconImage
-        add(infoLabel, BorderLayout.CENTER)
+
+        add(vBox, BorderLayout.CENTER)
     }
 
     override fun keyPressed(e: KeyEvent?) {
