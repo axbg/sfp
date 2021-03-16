@@ -1,9 +1,11 @@
 import com.sun.tools.javac.Main
 import java.awt.*
+import java.awt.RenderingHints
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.image.BufferedImage
 import javax.swing.*
+
 
 class ScreenLock(title: String) : JFrame(), KeyListener {
     init {
@@ -21,15 +23,25 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
     }
 
     private fun drawElements(frameTitle: String) {
-        val frameIconImage = Toolkit.getDefaultToolkit().getImage(Main::javaClass.javaClass.classLoader.getResource("icon.png"))
+        val frameIconImage =
+            Toolkit.getDefaultToolkit().getImage(Main::javaClass.javaClass.classLoader.getResource("icon.png"))
+        val hiddenCursor = Toolkit.getDefaultToolkit()
+            .createCustomCursor(BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), Point(), null)
 
-        val iconLabel = JLabel(ImageIcon(frameIconImage))
+        title = frameTitle
+        contentPane.background = Color.WHITE
+        contentPane.cursor = hiddenCursor
+        iconImage = frameIconImage
+
+        add(drawBox(frameIconImage), BorderLayout.CENTER)
+    }
+
+    private fun drawBox(image: Image): Box {
+        val iconLabel = JLabel(scaleImage(image, 150, 150))
         iconLabel.alignmentX = JLabel.CENTER_ALIGNMENT
 
         val infoLabel = JLabel("press ctrl + alt + shift + del to unlock the screen")
         infoLabel.alignmentX = JLabel.CENTER_ALIGNMENT
-
-        val hiddenCursor = Toolkit.getDefaultToolkit().createCustomCursor(BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), Point(), null)
 
         val vBox = Box.createVerticalBox()
         vBox.add(Box.createVerticalGlue())
@@ -37,12 +49,18 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
         vBox.add(infoLabel)
         vBox.add(Box.createVerticalGlue())
 
-        title = frameTitle
-        contentPane.background = Color.WHITE
-        contentPane.cursor = hiddenCursor
-        iconImage = frameIconImage
+        return vBox
+    }
 
-        add(vBox, BorderLayout.CENTER)
+    private fun scaleImage(image: Image, w: Int, h: Int): ImageIcon {
+        val resizedImg = BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB)
+        val g2 = resizedImg.createGraphics()
+
+        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR)
+        g2.drawImage(image, 0, 0, w, h, null)
+        g2.dispose()
+
+        return ImageIcon(resizedImg)
     }
 
     override fun keyPressed(e: KeyEvent?) {
