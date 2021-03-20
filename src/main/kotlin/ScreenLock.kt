@@ -8,8 +8,15 @@ import javax.swing.*
 
 
 class ScreenLock(title: String) : JFrame(), KeyListener {
+    private var password: String? = null
+
     init {
         createUI(title)
+    }
+
+    fun readPassword(): Boolean {
+        this.password = showPasswordPrompt()
+        return this.password != null
     }
 
     private fun createUI(title: String) {
@@ -63,8 +70,38 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
         return ImageIcon(resizedImg)
     }
 
+    private fun showPasswordPrompt(): String? {
+        val passwordField: JTextField = JPasswordField()
+        val ob = arrayOf(JLabel("Password"), passwordField)
+
+        val result = JOptionPane.showOptionDialog(
+            this,
+            ob,
+            "sfp - Screen Lock",
+            JOptionPane.OK_OPTION,
+            JOptionPane.QUESTION_MESSAGE,
+            null,
+            arrayOf("OK"),
+            null
+        )
+
+        if (result == JOptionPane.OK_OPTION) {
+            if (passwordField.text != null && passwordField.text.isNotBlank()) {
+                return passwordField.text
+            }
+
+            JOptionPane.showMessageDialog(this, "Password cannot be blank")
+        }
+
+        return null
+    }
+
     override fun keyPressed(e: KeyEvent?) {
         if (e!!.isControlDown && e.isShiftDown && e.keyCode == 127) {
+            if (this.password != null && !this.password.equals(showPasswordPrompt())) {
+                return
+            }
+
             dispose()
         }
     }

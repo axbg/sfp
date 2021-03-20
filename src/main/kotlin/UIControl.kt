@@ -61,15 +61,35 @@ class UIControl {
             return pauseAction
         }
 
-        internal fun bindLockScreen(): MenuItem {
-            val lockScreenAction = MenuItem("Lock screen")
+        internal fun bindLockScreen(): Menu {
+            val lockScreenMenu = Menu("Lock screen")
 
-            lockScreenAction.addActionListener {
-                val screenLock = ScreenLock("SFP Screen Lock")
-                screenLock.isVisible = true
+            val lockScreenActionNoPassword = MenuItem("Without password")
+            val lockScreenActionPassword = MenuItem("With password")
+
+            lockScreenActionNoPassword.addActionListener {
+                generateScreenLock(false)
             }
 
-            return lockScreenAction
+            lockScreenActionPassword.addActionListener {
+                generateScreenLock(true)
+            }
+
+            lockScreenMenu.add(lockScreenActionNoPassword)
+            lockScreenMenu.add(lockScreenActionPassword)
+
+            return lockScreenMenu
+        }
+
+        private fun generateScreenLock(withPassword: Boolean) {
+            val screenLock = ScreenLock("SFP Screen Lock")
+
+            if (withPassword && !screenLock.readPassword()) {
+                screenLock.dispose()
+                return
+            }
+
+            screenLock.isVisible = true
         }
 
         private fun bindDelayControl(menuItem: MenuItem, delay: RefreshRateEnum, font: Font = normalFont): MenuItem {
