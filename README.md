@@ -10,7 +10,7 @@
 
 ###### You can clone the repo and build the app or run the provided *sfp.jar* directly
 
-###### sfp.jar SHA-512 checksum: *5d79cd4c87890ad07eb4da7a077c968022b276772e32c83a22d651f80faa08da575b42861620cc68d989ff486da85609b5fed33cb1c7ec36b663108569730ff5*
+###### sfp.jar SHA-512 checksum: *fe639eb128e2ded4d16bfe49d8588742051904e420e164e67b973da9c3e2dfa3619e013a6d5bea45393bb715eba1fb090086d0e03959c2ff71acca015bc95673*
 
 #
 
