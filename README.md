@@ -8,12 +8,13 @@
 
 #
 
-###### You can clone the repo and build the app or run the provided *sfp.jar* directly
-
-###### sfp.jar SHA-512 checksum: *fe639eb128e2ded4d16bfe49d8588742051904e420e164e67b973da9c3e2dfa3619e013a6d5bea45393bb715eba1fb090086d0e03959c2ff71acca015bc95673*
-
-#
-
 ![SFP Running](https://i.ibb.co/qpT4xvM/skypf.png "SFP running")
 
 *context menu displayed on right click
+
+#
+
+You can clone the repo and build the app or run the provided [.jar](sfp.jar) 
+
+**sfp.jar SHA-512 checksum and VirusTotal scan report:**  
+[077BC380CC1153115A1BDDB2738550B18890F3F5752ADD24A29EC5DB49E0B15F](https://www.virustotal.com/gui/file/077BC380CC1153115A1BDDB2738550B18890F3F5752ADD24A29EC5DB49E0B15F/details)
