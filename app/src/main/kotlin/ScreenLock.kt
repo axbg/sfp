@@ -1,6 +1,5 @@
 import com.sun.tools.javac.Main
 import java.awt.*
-import java.awt.RenderingHints
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.image.BufferedImage
@@ -47,7 +46,7 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
         val iconLabel = JLabel(scaleImage(image, 150, 150))
         iconLabel.alignmentX = JLabel.CENTER_ALIGNMENT
 
-        val infoLabel = JLabel("press ctrl + alt + shift + del to unlock the screen")
+        val infoLabel = JLabel("press cmd/ctrl + shift + backspace to unlock the screen")
         infoLabel.alignmentX = JLabel.CENTER_ALIGNMENT
 
         val vBox = Box.createVerticalBox()
@@ -97,7 +96,7 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
     }
 
     override fun keyPressed(e: KeyEvent?) {
-        if (e!!.isControlDown && e.isShiftDown && e.keyCode == 127) {
+        if (e!!.isMetaDown && e.isShiftDown && e.keyCode == KeyEvent.VK_BACK_SPACE) {
             if (this.password != null && !this.password.equals(showPasswordPrompt())) {
                 return
             }
