@@ -1,3 +1,5 @@
+package main.kotlin.enums
+
 enum class RefreshRateEnum(val refreshRate: Long) {
     ONE_SECOND(1000),
     FIVE_SECONDS(5000),

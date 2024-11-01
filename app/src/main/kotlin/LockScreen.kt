@@ -1,13 +1,11 @@
 import com.sun.tools.javac.Main
 import java.awt.*
-import java.awt.RenderingHints
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 import java.awt.image.BufferedImage
 import javax.swing.*
 
-
-class ScreenLock(title: String) : JFrame(), KeyListener {
+class LockScreen(title: String) : JFrame(), KeyListener {
     private var password: String? = null
 
     init {
@@ -18,7 +16,6 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
         this.password = showPasswordPrompt()
         return this.password != null
     }
-
     private fun createUI(title: String) {
         drawElements(title)
         addKeyListener(this)
@@ -36,7 +33,7 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
             .createCustomCursor(BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), Point(), null)
 
         title = frameTitle
-        contentPane.background = Color.WHITE
+        contentPane.background = UIControl.lockScreenColor
         contentPane.cursor = hiddenCursor
         iconImage = frameIconImage
 
@@ -47,8 +44,9 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
         val iconLabel = JLabel(scaleImage(image, 150, 150))
         iconLabel.alignmentX = JLabel.CENTER_ALIGNMENT
 
-        val infoLabel = JLabel("press ctrl + alt + shift + del to unlock the screen")
+        val infoLabel = JLabel("press cmd/ctrl + shift + backspace to unlock the screen")
         infoLabel.alignmentX = JLabel.CENTER_ALIGNMENT
+        infoLabel.foreground = if (UIControl.lockScreenColor == Color.BLACK) Color.WHITE else Color.BLACK
 
         val vBox = Box.createVerticalBox()
         vBox.add(Box.createVerticalGlue())
@@ -97,7 +95,7 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
     }
 
     override fun keyPressed(e: KeyEvent?) {
-        if (e!!.isControlDown && e.isShiftDown && e.keyCode == 127) {
+        if (e!!.isMetaDown && e.isShiftDown && e.keyCode == KeyEvent.VK_BACK_SPACE) {
             if (this.password != null && !this.password.equals(showPasswordPrompt())) {
                 return
             }

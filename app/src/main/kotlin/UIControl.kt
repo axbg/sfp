@@ -1,6 +1,11 @@
-import RefreshRateEnum.*
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import main.kotlin.enums.LockScreenColorEnum
+import main.kotlin.enums.LockScreenColorEnum.BLACK
+import main.kotlin.enums.LockScreenColorEnum.WHITE
+import main.kotlin.enums.RefreshRateEnum
+import main.kotlin.enums.RefreshRateEnum.*
+import java.awt.Color
 import java.awt.Font
 import java.awt.Menu
 import java.awt.MenuItem
@@ -12,6 +17,7 @@ class UIControl {
         private val selectedFont = Font(Font.SERIF, Font.BOLD, 13)
 
         var repeatDelay: Long = THIRTY_SECONDS.refreshRate
+        var lockScreenColor: Color = Color.BLACK
         var isPaused: Boolean = false
 
         internal fun bindCloseAction(): MenuItem {
@@ -81,21 +87,46 @@ class UIControl {
             return lockScreenMenu
         }
 
-        private fun generateScreenLock(withPassword: Boolean) {
-            val screenLock = ScreenLock("SFP Screen Lock")
+        internal fun bindLockScreenColor(): Menu {
+            val black = MenuItem("Black")
+            val white = MenuItem("White")
 
-            if (withPassword && !screenLock.readPassword()) {
-                screenLock.dispose()
+            val lockScreenColor = Menu("Lock screen color")
+            lockScreenColor.add(bindLockScreenColorControl(black, BLACK))
+            lockScreenColor.add(bindLockScreenColorControl(white, WHITE))
+
+            return lockScreenColor
+        }
+
+        private fun generateScreenLock(withPassword: Boolean) {
+            val lockScreen = LockScreen("SFP Screen Lock")
+
+            if (withPassword && !lockScreen.readPassword()) {
+                lockScreen.dispose()
                 return
             }
 
-            screenLock.isVisible = true
+            lockScreen.isVisible = true
         }
 
         private fun bindDelayControl(menuItem: MenuItem, delay: RefreshRateEnum, font: Font = normalFont): MenuItem {
             menuItem.font = font
             menuItem.addActionListener {
                 repeatDelay = delay.refreshRate
+                unselectAll(menuItem.parent as Menu)
+                menuItem.font = selectedFont
+            }
+            return menuItem
+        }
+
+        private fun bindLockScreenColorControl(
+            menuItem: MenuItem,
+            color: LockScreenColorEnum,
+            font: Font = normalFont
+        ): MenuItem {
+            menuItem.font = font
+            menuItem.addActionListener {
+                lockScreenColor = color.color
                 unselectAll(menuItem.parent as Menu)
                 menuItem.font = selectedFont
             }
