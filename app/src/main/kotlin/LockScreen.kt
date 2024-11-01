@@ -5,8 +5,7 @@ import java.awt.event.KeyListener
 import java.awt.image.BufferedImage
 import javax.swing.*
 
-
-class ScreenLock(title: String) : JFrame(), KeyListener {
+class LockScreen(title: String) : JFrame(), KeyListener {
     private var password: String? = null
 
     init {
@@ -17,7 +16,6 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
         this.password = showPasswordPrompt()
         return this.password != null
     }
-
     private fun createUI(title: String) {
         drawElements(title)
         addKeyListener(this)
@@ -35,7 +33,7 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
             .createCustomCursor(BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB), Point(), null)
 
         title = frameTitle
-        contentPane.background = Color.WHITE
+        contentPane.background = UIControl.lockScreenColor
         contentPane.cursor = hiddenCursor
         iconImage = frameIconImage
 
@@ -48,6 +46,7 @@ class ScreenLock(title: String) : JFrame(), KeyListener {
 
         val infoLabel = JLabel("press cmd/ctrl + shift + backspace to unlock the screen")
         infoLabel.alignmentX = JLabel.CENTER_ALIGNMENT
+        infoLabel.foreground = if (UIControl.lockScreenColor == Color.BLACK) Color.WHITE else Color.BLACK
 
         val vBox = Box.createVerticalBox()
         vBox.add(Box.createVerticalGlue())
