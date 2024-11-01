@@ -12,14 +12,14 @@
     <artifactId>app</artifactId>
 
     <properties>
-        <kotlin.version>1.6.20</kotlin.version>
+        <kotlin.version>2.0.21</kotlin.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.jetbrains.kotlinx</groupId>
             <artifactId>kotlinx-coroutines-core</artifactId>
-            <version>1.6.1-native-mt</version>
+            <version>1.9.0</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
@@ -47,7 +47,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.6</version>
+                <version>3.7.1</version>
                 <executions>
                     <execution>
                         <id>make-assembly</id>
