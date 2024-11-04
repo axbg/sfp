@@ -16,6 +16,7 @@ class LockScreen(title: String) : JFrame(), KeyListener {
         this.password = showPasswordPrompt()
         return this.password != null
     }
+
     private fun createUI(title: String) {
         drawElements(title)
         addKeyListener(this)

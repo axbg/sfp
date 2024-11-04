@@ -5,6 +5,8 @@ import main.kotlin.enums.LockScreenColorEnum.BLACK
 import main.kotlin.enums.LockScreenColorEnum.WHITE
 import main.kotlin.enums.RefreshRateEnum
 import main.kotlin.enums.RefreshRateEnum.*
+import main.kotlin.os.OSStrategy
+import main.kotlin.os.OSStrategyFactory
 import java.awt.Color
 import java.awt.Font
 import java.awt.Menu
@@ -19,6 +21,7 @@ class UIControl {
         var repeatDelay: Long = THIRTY_SECONDS.refreshRate
         var lockScreenColor: Color = Color.BLACK
         var isPaused: Boolean = false
+        var osStrategy: OSStrategy = OSStrategyFactory.obtainCurrentStrategy()
 
         internal fun bindCloseAction(): MenuItem {
             val closeAction = MenuItem("Close")
@@ -71,18 +74,18 @@ class UIControl {
             val lockScreenMenu = Menu("Lock screen")
 
             val lockScreenActionNoPassword = MenuItem("Without password")
-            val lockScreenActionPassword = MenuItem("With password")
-
             lockScreenActionNoPassword.addActionListener {
-                generateScreenLock(false)
+                generateLockScreen(false)
             }
-
-            lockScreenActionPassword.addActionListener {
-                generateScreenLock(true)
-            }
-
             lockScreenMenu.add(lockScreenActionNoPassword)
-            lockScreenMenu.add(lockScreenActionPassword)
+
+            if (osStrategy.shouldAllowLockWithPassword()) {
+                val lockScreenActionPassword = MenuItem("With password")
+                lockScreenActionPassword.addActionListener {
+                    generateLockScreen(true)
+                }
+                lockScreenMenu.add(lockScreenActionPassword)
+            }
 
             return lockScreenMenu
         }
@@ -98,7 +101,7 @@ class UIControl {
             return lockScreenColor
         }
 
-        private fun generateScreenLock(withPassword: Boolean) {
+        private fun generateLockScreen(withPassword: Boolean) {
             val lockScreen = LockScreen("SFP Screen Lock")
 
             if (withPassword && !lockScreen.readPassword()) {
@@ -107,6 +110,7 @@ class UIControl {
             }
 
             lockScreen.isVisible = true
+            osStrategy.applyLockSettings(lockScreen)
         }
 
         private fun bindDelayControl(menuItem: MenuItem, delay: RefreshRateEnum, font: Font = normalFont): MenuItem {
